@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Map.h"
+#include "Herbivore.h"
+#include "Omnivore.h"
 #include <vector>
 #include <string>
 #include <fstream>

@@ -25,6 +25,7 @@ void Ecosystem::createSpeciesList(std::string speciesFile) {
 }
 
 Organism parseSpecies(std::string& s) {
+    Organism organism;
     std::string type = s.substr(0,indexOf(s,' '));
     if (type.compare("plant")==0) {
         char id = s[6];
@@ -34,14 +35,19 @@ Organism parseSpecies(std::string& s) {
         std::string s_energyPts = s.substr(spaceIdx+1,s.length());
         int regrowCoef = stoi(s_regrowCoef);
         int energyPts = stoi(s_energyPts);
-        Organism organism = Plant(-1,-1,id,regrowCoef,energyPts);
+        organism = Plant(-1,-1,id,regrowCoef,energyPts);
     } else if (type.compare("herbivore")==0) {
-
+        char id = s[10];
+        std::string s_maxEnergy = s.substr(12,s.length());
+        int maxEnergy = stoi(s_maxEnergy);
+        organism = Herbivore(-1,-1,id,maxEnergy);
     } else {
-
+        char id = s[9];
+        std::string s_maxEnergy = s.substr(11,s.length());
+        int maxEnergy = stoi(s_maxEnergy);
+        organism = Omnivore(-1,-1,id,maxEnergy);
     }
-    
-    return Organism{};
+    return organism;
 }
 
 int mapWidth(std::string mapFile) {

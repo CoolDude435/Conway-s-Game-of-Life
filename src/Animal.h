@@ -12,6 +12,10 @@ class Animal : public Organism
         Animal(int x, int y, char id, int maxEnergy);
         int getEnergy();
         int getMaxEnergy();
+        Animal* clone();
+
+
+
         bool moveNorth();
         bool moveSouth();
         bool moveWest();

@@ -8,6 +8,10 @@ Animal::Animal(int x, int y, char id, int maxEnergy)
 int Animal::getEnergy() { return m_energy; }
 int Animal::getMaxEnergy() { return m_maxEnergy; }
 
+Animal* Animal::clone() {
+    return new Animal(getX(),getY(),getID(),getMaxEnergy());
+}
+
 bool moveNorth() {
     //WIP
     return false;

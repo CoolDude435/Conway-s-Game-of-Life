@@ -9,3 +9,7 @@ int Plant::getRegrowCoef() { return m_regrowCoef; }
 int Plant::getEnergyPts() { return m_energyPts; }
 int Plant::getRegrowTimer() { return m_regrowTimer; }
 bool Plant::isEaten() { return m_isEaten; }
+
+Plant* Plant::clone() {
+    return new Plant(getX(),getY(),getID(),getRegrowCoef(),getEnergyPts());
+}

@@ -10,4 +10,5 @@ class Organism : public Entity
         Organism();
         Organism(int x, int y, int id);
         int getID();
+        virtual Organism* clone();
 };

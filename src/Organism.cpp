@@ -5,3 +5,6 @@ Organism::Organism()
 Organism::Organism(int x, int y, int id) 
     : Entity{x,y}, m_id{id} {}
 int Organism::getID() { return m_id; }
+Organism* Organism::clone() {
+    return new Organism(getX(),getY(),getID());
+}

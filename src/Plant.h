@@ -16,4 +16,5 @@ class Plant : public Organism
         int getEnergyPts();
         int getRegrowTimer();
         bool isEaten();
+        Plant* clone();
 };

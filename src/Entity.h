@@ -10,9 +10,8 @@ class Entity
     public:
         Entity();
         Entity(int x, int y);
-        int getX();
-        int getY();
-    protected:
+        int getX() const;
+        int getY() const;
         void setX(int x);
         void setY(int y);
 };

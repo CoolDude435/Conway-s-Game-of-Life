@@ -10,9 +10,10 @@ class Animal : public Organism
     public:
         Animal();
         Animal(int x, int y, char id, int maxEnergy);
-        int getEnergy();
-        int getMaxEnergy();
-        Animal* clone();
+        int getEnergy() const;
+        int getMaxEnergy() const;
+        virtual Animal* clone() = 0;
+        
 
 
 

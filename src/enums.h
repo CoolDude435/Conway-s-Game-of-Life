@@ -1,8 +1,9 @@
 #pragma once
 
 enum SpeciesType
-{
-    Plant,
-    Herbivore,
-    Omnivore
+{   
+    NA,
+    plant,
+    herbivore,
+    omnivore
 };

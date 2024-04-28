@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "MapTile.h"
+#include <iostream>
 
 class Map
 {
@@ -12,6 +13,8 @@ class Map
     public:
         Map();
         Map(int height, int width);
-        MapTile* getMapTile(int x, int y);
-        
+        MapTile* getTile(int x, int y) const;
+        int getWidth() const;
+        int getHeight() const;
+        void print() const;
 };

@@ -1,29 +1,35 @@
-all: ecosystem.bin
+all: Ecosystem.bin
 
-ecosystem.bin: main.cpp Ecosystem.cpp Ecosystem.h Organism.o Plant.o Animal.o Omnivore.o Carnivore.o Map.o
-	g++ -o Ecosystem.bin main.cpp Ecosystem.cpp Ecosystem.h Organism.o Plant.o Animal.o Omnivore.o Carnivore.o Map.o
+#Ecosystem.bin: Ecosystem.cpp Ecosystem.h Map.o Herbivore.o Omnivore.o
+#g++ -o Ecosystem.bin Ecosystem.cpp Ecosystem.h Map.o Herbivore.o Omnivore.o
+Ecosystem.bin: Ecosystem.cpp Ecosystem.h Entity.o Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o
+	g++ -o Ecosystem.h Entity.o Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o
 
-organism.o: organism.cpp organism.h
-	g++ -c organism.cpp organism.h
+Entity.o: Entity.cpp Entity.h
+	g++ -c Entity.cpp Entity.h
 
-map.o: map.cpp map.h maptile.o
-	g++ -c map.cpp map.h maptile.o
+Organism.o: Organism.cpp Organism.h Entity.o enums.h
+	g++ -c Organism.cpp Organism.h Entity.o enums.h
 
-maptile.o: maptile.h
+Map.o: Map.cpp Map.h MapTile.o
+	g++ -c Map.cpp Map.h MapTile.o
 
-plant.o: plant.cpp plant.h organism.o
-	g++ -c plant.cpp plant.h organism.o
+MapTile.o: MapTile.cpp MapTile.h Entity.o Animal.o Plant.o
+	g++ -c MapTile.cpp MapTile.h Entity.o Animal.o Plant.o
 
-animal.o: animal.cpp animal.h organism.o
-	g++ -c animal.cpp animal.h organism.o
+Plant.o: Plant.cpp Plant.h Organism.o
+	g++ -c Plant.cpp Plant.h Organism.o
 
-omnivore.o: omnivore.cpp omnivore.h animal.o
-	g++ -c omnivore.cpp omnivore.h animal.o
+Animal.o: Animal.cpp Animal.h Organism.o
+	g++ -c Animal.cpp Animal.h Organism.o
 
-carnivore.o: carnivore.cpp carnivore.h animal.o
-	g++ -c carnivore.cpp carnivore.h animal.o
+Omnivore.o: Omnivore.cpp Omnivore.h Animal.o
+	g++ -c Omnivore.cpp Omnivore.h Animal.o
+
+Herbivore.o: Herbivore.cpp Herbivore.h Animal.o
+	g++ -c Herbivore.cpp Herbivore.h Animal.o
 
 
 
 clean:
-	rm -rf *.o *.bin
+	rm -rf *.o *.bin *gch

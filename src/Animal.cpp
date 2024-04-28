@@ -5,12 +5,11 @@ Animal::Animal()
 Animal::Animal(int x, int y, char id, int maxEnergy)
     : Organism{x,y,id}, m_energy{maxEnergy}, m_maxEnergy{maxEnergy} {}
 
-int Animal::getEnergy() { return m_energy; }
-int Animal::getMaxEnergy() { return m_maxEnergy; }
+int Animal::getEnergy() const { return m_energy; }
+int Animal::getMaxEnergy() const { return m_maxEnergy; }
 
-Animal* Animal::clone() {
-    return new Animal(getX(),getY(),getID(),getMaxEnergy());
-}
+
+
 
 bool moveNorth() {
     //WIP

@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "enums.h"
 
+
 class Organism : public Entity
 {
     private:
@@ -13,4 +14,5 @@ class Organism : public Entity
         char getID();
         virtual Organism* clone() = 0;
         virtual SpeciesType getSpeciesType() = 0;
+        virtual void takeTurn() = 0;
 };

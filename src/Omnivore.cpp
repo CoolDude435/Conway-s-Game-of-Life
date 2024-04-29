@@ -8,3 +8,4 @@ Omnivore* Omnivore::clone() {
     return new Omnivore(getX(),getY(),getID(),getMaxEnergy());
 }
 SpeciesType Omnivore::getSpeciesType() { return omnivore; }
+void Omnivore::takeTurn() {}

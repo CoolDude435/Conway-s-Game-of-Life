@@ -18,4 +18,5 @@ class Plant : public Organism
         bool isEaten() const;
         Plant* clone();
         SpeciesType getSpeciesType() override;
+        void takeTurn() override;
 };

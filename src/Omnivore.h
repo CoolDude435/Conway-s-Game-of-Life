@@ -10,4 +10,5 @@ class Omnivore : public Animal
         Omnivore(int x, int y, char id, int maxEnergy);
         Omnivore* clone();
         SpeciesType getSpeciesType() override;
+        void takeTurn() override;
 };

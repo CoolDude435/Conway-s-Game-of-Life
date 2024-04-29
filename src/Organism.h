@@ -10,7 +10,7 @@ class Organism : public Entity
     public:
         Organism();
         Organism(int x, int y, char id);
-        int getID();
+        char getID();
         virtual Organism* clone() = 0;
         virtual SpeciesType getSpeciesType() = 0;
 };

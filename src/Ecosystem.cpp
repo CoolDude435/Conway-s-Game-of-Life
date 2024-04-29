@@ -23,23 +23,33 @@ void Ecosystem::populateMap(std::string mapFile) {
                 SpeciesType type = organism->getSpeciesType();
                 switch(type) {
                     case plant:
-                        Plant* p = (dynamic_cast<Plant*>(organism))->clone();
-                        p->setX(j);
-                        p->setY(i);
-                        m_map.getTile(j,i)->setPlant(p);
+                        {
+                            Plant* p = (dynamic_cast<Plant*>(organism))->clone();
+                            p->setX(j);
+                            p->setY(i);
+                            m_map.getTile(j,i)->setPlant(p);
+                        }
+                        break;
                     case herbivore:
-                        Herbivore* h = (dynamic_cast<Herbivore*>(organism))->clone();
-                        h->setX(j);
-                        h->setY(i);
-                        m_map.getTile(j,i)->setAnimal(h);
+                        {
+                            Herbivore* h = (dynamic_cast<Herbivore*>(organism))->clone();
+                            h->setX(j);
+                            h->setY(i);
+                            m_map.getTile(j,i)->setAnimal(h);
+                        }
+                        break;
                     case omnivore:
-                        Omnivore* o = (dynamic_cast<Omnivore*>(organism))->clone();
-                        o->setX(j);
-                        o->setY(i);
-                        m_map.getTile(j,i)->setAnimal(o);
+                        {
+                            Omnivore* o = (dynamic_cast<Omnivore*>(organism))->clone();
+                            o->setX(j);
+                            o->setY(i);
+                            m_map.getTile(j,i)->setAnimal(o);
+                        }
+                        break;
                     default:
                         std::cerr << "SpeciesType Invalid in Ecosystem::populateMap";
                         //This should never trigger, for testing purposes
+                        break;
                 }
             }
         }
@@ -88,10 +98,11 @@ int mapWidth(std::string mapFile) {
     int width{0};
     std::ifstream mFile{mapFile};
     std::string s{};
-    while (getline(mFile,s)) {
-        width++;
-    }
-    mFile.close();
+    getline(mFile,s);
+        width = s.length();
+        mFile.close();
+
+    
     return width;
 }
 
@@ -99,9 +110,12 @@ int mapHeight(std::string mapFile) {
     int height{0};
     std::ifstream mFile{mapFile};
     std::string s{};
-    getline(mFile,s);
-    height = s.length();
-    mFile.close();
+
+    while (getline(mFile,s)) {
+            height++;
+        }
+        mFile.close();
+    
     return height;
 }
 
@@ -115,12 +129,14 @@ int indexOf(std::string& s,char c) {
 }
 
 int main(int argc, char* argv[]) {
+    std::string path = "/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/";
     if (argc == 2) {
         std::string mapFile{argv[0]};
         std::string speciesFile{argv[1]};
     }
-    
+    Ecosystem ecosystem{"/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/map.txt","/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/species.txt"};
 
-    Ecosystem ecosystem{"map.txt","species.txt"};
+    std::cout << "Width: " << mapWidth("map.txt") << '\n';
+    std::cout << "Height: " << mapHeight("map.txt") << '\n';    
     ecosystem.getMap().print();
 }

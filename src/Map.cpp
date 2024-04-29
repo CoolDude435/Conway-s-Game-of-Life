@@ -22,7 +22,6 @@ int Map::getWidth() const { return m_width; }
 int Map::getHeight() const { return m_height; }
 
 void Map::print() const {
-    std::cout << "bruh\n";
     for (int i=0;i<m_width;i++) { std::cout << '-'; }
     std::cout << '\n';
     for (int i=0;i<m_height;i++) {

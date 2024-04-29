@@ -12,7 +12,6 @@ class Animal : public Organism
         Animal(int x, int y, char id, int maxEnergy);
         int getEnergy() const;
         int getMaxEnergy() const;
-        virtual Animal* clone() = 0;
         
 
 

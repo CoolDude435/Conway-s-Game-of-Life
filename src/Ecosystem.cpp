@@ -1,9 +1,9 @@
 #include "Ecosystem.h"
 
 Ecosystem::Ecosystem() 
-    : m_map{}, m_organisms{} {}
+    : m_map{}, m_species{} {}
 Ecosystem::Ecosystem(std::string mapFile, std::string speciesFile) 
-    : m_organisms{} {
+    : m_species{} {
     int width = mapWidth(mapFile);
     int height = mapHeight(mapFile);
     m_map = Map(height,width);
@@ -19,7 +19,7 @@ void Ecosystem::populateMap(std::string mapFile) {
         for (int j=0;j<m_map.getWidth();j++) {
             char tile = row[j];
             if(tile!=' ') {
-                Organism* organism = m_organisms[tile];
+                Organism* organism = m_species[tile];
                 SpeciesType type = organism->getSpeciesType();
                 switch(type) {
                     case plant:
@@ -61,12 +61,22 @@ void Ecosystem::createSpeciesList(std::string speciesFile) {
     std::string s{};
     while (getline(sFile,s)) {
         Organism* o = parseSpecies(s);
-        m_organisms[o->getID()] = o;
+        m_species[o->getID()] = o;
     }
 }
 
 Map Ecosystem::getMap() { return m_map; }
-std::unordered_map<char,Organism*> Ecosystem::getSpecies() { return m_organisms; }
+std::unordered_map<char,Organism*> Ecosystem::getSpecies() { return m_species; }
+
+void Ecosystem::iterate() {
+
+}
+
+void Ecosystem::iterate(int steps) {
+    for (int i=0;i<steps;i++) {
+        iterate();
+    }
+}
 
 Organism* parseSpecies(std::string& s) {
     Organism* organism;
@@ -136,7 +146,7 @@ int main(int argc, char* argv[]) {
     }
     Ecosystem ecosystem{"/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/map.txt","/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/species.txt"};
 
-    std::cout << "Width: " << mapWidth("map.txt") << '\n';
-    std::cout << "Height: " << mapHeight("map.txt") << '\n';    
+    std::cout << "Width: " << ecosystem.getMap().getWidth() << '\n';
+    std::cout << "Height: " << ecosystem.getMap().getHeight() << '\n';    
     ecosystem.getMap().print();
 }

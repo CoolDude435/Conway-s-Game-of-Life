@@ -13,13 +13,15 @@ class Ecosystem
 {
     private:
         Map m_map{};
-        std::unordered_map<char,Organism*> m_organisms{};
+        std::unordered_map<char,Organism*> m_species{};
 
     public:
         Ecosystem();
         Ecosystem(std::string mapFile, std::string speciesFile);
         Map getMap();
         std::unordered_map<char,Organism*> getSpecies();
+        void iterate();
+        void iterate(int steps);
     private:
         void populateMap(std::string mapFile);
         void createSpeciesList(std::string speciesFile);

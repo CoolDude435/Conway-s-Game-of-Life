@@ -8,6 +8,6 @@ class Herbivore : public Animal
     public:
         Herbivore();
         Herbivore(int x, int y, char id, int maxEnergy);
-        Herbivore* clone() override;
+        Herbivore* clone();
         SpeciesType getSpeciesType() override;
 };

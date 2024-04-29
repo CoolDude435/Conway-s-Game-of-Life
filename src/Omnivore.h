@@ -8,6 +8,6 @@ class Omnivore : public Animal
     public:
         Omnivore();
         Omnivore(int x, int y, char id, int maxEnergy);
-        Omnivore* clone() override;
+        Omnivore* clone();
         SpeciesType getSpeciesType() override;
 };

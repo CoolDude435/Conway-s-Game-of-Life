@@ -81,8 +81,40 @@ void Ecosystem::iterate(int steps) {
     }
 }
 
-void Ecosystem::takeTurn(Organism* organism) {}
-void Ecosystem::takeTurn(Plant* plant) {}
+void Ecosystem::takeTurn(Organism* organism) {
+    SpeciesType type = organism->getSpeciesType();
+    switch(type) {
+    case plant:
+        {
+            Plant* p = (dynamic_cast<Plant*>(organism))->clone();
+            takeTurn(p);
+        }
+        break;
+    case herbivore:
+        {
+            Herbivore* h = (dynamic_cast<Herbivore*>(organism))->clone();
+            takeTurn(h);
+        }
+        break;
+    case omnivore:
+        {
+            Omnivore* o = (dynamic_cast<Omnivore*>(organism))->clone();
+            takeTurn(o);
+        }
+        break;
+    default:
+        std::cerr << "SpeciesType Invalid in Ecosystem::populateMap";
+        //This should never trigger, for testing purposes
+        break;
+    }
+}
+void Ecosystem::takeTurn(Plant* plant) {
+    if (plant->isEaten()) {
+        if (m_map.getTile(plant->getX(),plant->getY())->hasAnimal()==false) {
+            plant->grow();
+        }
+    }
+}
 void Ecosystem::takeTurn(Herbivore* herbivore) {}
 void Ecosystem::takeTurn(Omnivore* omnivore) {}
 
@@ -121,7 +153,6 @@ int main(int argc, char* argv[]) {
     std::string map = path+"map.txt";
     std::string species = path+"species.txt";
     Ecosystem ecosystem{map,species};
-
     std::cout << "Width: " << ecosystem.getMap().getWidth() << '\n';
     std::cout << "Height: " << ecosystem.getMap().getHeight() << '\n';    
     ecosystem.getMap().print();

@@ -18,6 +18,7 @@ class Plant : public Organism
         int getEnergyPts() const;
         int getRegrowTimer() const;
         bool isEaten() const;
+        void grow();
         Plant* clone();
         SpeciesType getSpeciesType() override;
 };

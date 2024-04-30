@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Organism.h"
+#include "Plant.h"
 
 class Animal : public Organism
 {
@@ -12,6 +14,8 @@ class Animal : public Organism
         Animal(int x, int y, char id, int maxEnergy);
         int getEnergy() const;
         int getMaxEnergy() const;
+        bool canConsume(Plant* plant);
+        
         
         void moveNorth();
         void moveSouth();

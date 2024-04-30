@@ -9,13 +9,14 @@ Map.o: Map.cpp Map.h MapTile.o MapTile.cpp MapTile.h
 MapTile.o: MapTile.cpp MapTile.h Plant.o Plant.cpp Plant.h Animal.o Animal.cpp Animal.h
 	g++ -c MapTile.cpp
 
-Omnivore.o: Omnivore.cpp Omnivore.h Animal.o Animal.cpp Animal.h
+
+Omnivore.o: Omnivore.cpp Omnivore.h Animal.o Animal.cpp Animal.h Herbivore.o Herbivore.cpp Herbivore.h
 	g++ -c Omnivore.cpp
 
 Herbivore.o: Herbivore.cpp Herbivore.h Animal.o Animal.cpp Animal.h
 	g++ -c Herbivore.cpp
 
-Animal.o: Animal.cpp Animal.h Organism.o Organism.cpp Organism.h
+Animal.o: Animal.cpp Animal.h Organism.o Organism.cpp Organism.h Plant.o Plant.cpp Plant.h
 	g++ -c Animal.cpp
 
 Plant.o: Plant.cpp Plant.h Organism.o Organism.cpp Organism.h

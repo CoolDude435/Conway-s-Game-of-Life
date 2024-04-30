@@ -9,6 +9,13 @@ int Plant::getRegrowCoef() const { return m_regrowCoef; }
 int Plant::getEnergyPts() const { return m_energyPts; }
 int Plant::getRegrowTimer() const { return m_regrowTimer; }
 bool Plant::isEaten() const { return m_isEaten; }
+void Plant::grow() {
+    m_regrowTimer++;
+    if (m_regrowTimer==m_regrowCoef) {
+        m_regrowTimer = 0;
+        m_isEaten = false;
+    }
+}
 
 Plant* Plant::clone() {
     return new Plant(getX(),getY(),getID(),getRegrowCoef(),getEnergyPts());

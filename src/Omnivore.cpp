@@ -8,3 +8,11 @@ Omnivore* Omnivore::clone() {
     return new Omnivore(getX(),getY(),getID(),getMaxEnergy());
 }
 SpeciesType Omnivore::getSpeciesType() { return omnivore; }
+
+bool Omnivore::canConsume(Herbivore* herbivore) {
+    if ((this->getEnergy()+herbivore->getEnergy()-1)<=this->getMaxEnergy()) {
+        return true;
+    } else {
+        return false;
+    }
+}

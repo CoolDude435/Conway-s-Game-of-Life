@@ -2,9 +2,6 @@
 
 #include "enums.h"
 
-
-
-
 class Organism
 {
     private:

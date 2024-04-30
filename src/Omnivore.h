@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Animal.h"
+#include "Herbivore.h"
 
 class Omnivore : public Animal
 {
@@ -10,4 +12,5 @@ class Omnivore : public Animal
         Omnivore(int x, int y, char id, int maxEnergy);
         Omnivore* clone();
         SpeciesType getSpeciesType() override;
+        bool canConsume(Herbivore* animal);
 };

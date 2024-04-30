@@ -1,9 +1,9 @@
 #include "Ecosystem.h"
 
 Ecosystem::Ecosystem() 
-    : m_map{}, m_species{} {}
-Ecosystem::Ecosystem(std::string mapFile, std::string speciesFile) 
-    : m_species{} {
+    : m_map{}, m_species{}, m_organisms{} {}
+Ecosystem::Ecosystem(std::string& mapFile, std::string& speciesFile) 
+    : m_species{}, m_organisms{} {
     int width = mapWidth(mapFile);
     int height = mapHeight(mapFile);
     m_map = Map(height,width);
@@ -11,7 +11,7 @@ Ecosystem::Ecosystem(std::string mapFile, std::string speciesFile)
     populateMap(mapFile);
 }
 
-void Ecosystem::populateMap(std::string mapFile) {
+void Ecosystem::populateMap(std::string& mapFile) {
     std::ifstream mFile{mapFile};
     std::string row{};
     for (int i=0;i<m_map.getHeight();i++) {
@@ -28,6 +28,7 @@ void Ecosystem::populateMap(std::string mapFile) {
                             p->setX(j);
                             p->setY(i);
                             m_map.getTile(j,i)->setPlant(p);
+                            m_organisms.insert(p);
                         }
                         break;
                     case herbivore:
@@ -36,6 +37,7 @@ void Ecosystem::populateMap(std::string mapFile) {
                             h->setX(j);
                             h->setY(i);
                             m_map.getTile(j,i)->setAnimal(h);
+                            m_organisms.insert(h);
                         }
                         break;
                     case omnivore:
@@ -44,6 +46,7 @@ void Ecosystem::populateMap(std::string mapFile) {
                             o->setX(j);
                             o->setY(i);
                             m_map.getTile(j,i)->setAnimal(o);
+                            m_organisms.insert(o);
                         }
                         break;
                     default:
@@ -56,7 +59,7 @@ void Ecosystem::populateMap(std::string mapFile) {
     }
 }
 
-void Ecosystem::createSpeciesList(std::string speciesFile) {
+void Ecosystem::createSpeciesList(std::string& speciesFile) {
     std::ifstream sFile{speciesFile};
     std::string s{};
     while (getline(sFile,s)) {
@@ -77,6 +80,11 @@ void Ecosystem::iterate(int steps) {
         iterate();
     }
 }
+
+void Ecosystem::takeTurn(Organism* organism) {}
+void Ecosystem::takeTurn(Plant* plant) {}
+void Ecosystem::takeTurn(Herbivore* herbivore) {}
+void Ecosystem::takeTurn(Omnivore* omnivore) {}
 
 Organism* parseSpecies(std::string& s) {
     Organism* organism;
@@ -110,7 +118,9 @@ int main(int argc, char* argv[]) {
         std::string mapFile{argv[0]};
         std::string speciesFile{argv[1]};
     }
-    Ecosystem ecosystem{"/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/map.txt","/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/species.txt"};
+    std::string map = path+"map.txt";
+    std::string species = path+"species.txt";
+    Ecosystem ecosystem{map,species};
 
     std::cout << "Width: " << ecosystem.getMap().getWidth() << '\n';
     std::cout << "Height: " << ecosystem.getMap().getHeight() << '\n';    

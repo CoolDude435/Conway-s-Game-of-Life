@@ -1,7 +1,7 @@
 all: Ecosystem.bin
 
-Ecosystem.bin: Ecosystem.cpp Ecosystem.h Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o enums.h
-	g++ -o Ecosystem.bin Ecosystem.cpp Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o
+Ecosystem.bin: Ecosystem.cpp Ecosystem.h Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o enums.h util.o
+	g++ -o Ecosystem.bin Ecosystem.cpp Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o util.o
 
 Map.o: Map.cpp Map.h MapTile.o MapTile.cpp MapTile.h
 	g++ -c Map.cpp
@@ -23,6 +23,9 @@ Plant.o: Plant.cpp Plant.h Organism.o Organism.cpp Organism.h
 
 Organism.o: Organism.cpp Organism.h enums.h
 	g++ -c Organism.cpp
+
+util.o: util.cpp util.h
+	g++ -c util.cpp
 
 clean:
 	rm -rf *.o *.bin *gch

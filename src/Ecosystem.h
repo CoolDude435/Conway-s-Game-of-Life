@@ -8,6 +8,7 @@
 #include <fstream>
 #include <unordered_map>
 #include <iostream>
+#include "util.h"
 
 class Ecosystem
 {
@@ -31,6 +32,4 @@ class Ecosystem
 };
 
 Organism* parseSpecies(std::string& s);
-int mapWidth(std::string mapFile);
-int mapHeight(std::string mapFile);
-int indexOf(std::string& s,char c);
+

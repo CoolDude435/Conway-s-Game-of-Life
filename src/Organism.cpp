@@ -1,7 +1,13 @@
 #include "Organism.h"
 
 Organism::Organism() 
-    : Entity{}, m_id{} {}
+    : m_x{}, m_y{}, m_id{} {}
 Organism::Organism(int x, int y, char id) 
-    : Entity{x,y}, m_id{id} {}
+    : m_x{x}, m_y{y}, m_id{id} {}
+
+int Organism::getX() const { return m_x; }
+int Organism::getY() const { return m_y; }
+void Organism::setX(int x) { m_x = x; }
+void Organism::setY(int y) { m_y = y; } 
+
 char Organism::getID() { return m_id; }

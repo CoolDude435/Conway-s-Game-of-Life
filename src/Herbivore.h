@@ -10,5 +10,4 @@ class Herbivore : public Animal
         Herbivore(int x, int y, char id, int maxEnergy);
         Herbivore* clone();
         SpeciesType getSpeciesType() override;
-        void takeTurn() override;
 };

@@ -11,19 +11,15 @@ int Animal::getMaxEnergy() const { return m_maxEnergy; }
 
 
 
-bool moveNorth() {
-    //WIP
-    return false;
+void Animal::moveNorth() {
+    setY(getY()-1);
 }
-bool moveSouth() {
-    //WIP
-    return false;
+void Animal::moveSouth() {
+    setY(getY()+1);
 }
-bool moveWest() {
-    //WIP
-    return false;
+void Animal::moveWest() {
+    setX(getX()-1);
 }
-bool moveEast() {
-    //WIP
-    return false;
+void Animal::moveEast() {
+    setX(getX()+1);
 }

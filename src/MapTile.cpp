@@ -2,9 +2,14 @@
 #include <iostream>
 
 MapTile::MapTile() 
-    : Entity{}, m_plant{nullptr}, m_animal{nullptr} {}
+    : m_x{}, m_y{}, m_plant{nullptr}, m_animal{nullptr} {}
 MapTile::MapTile(int x, int y, Plant* plant, Animal* animal) 
-    : Entity{x,y}, m_plant{plant}, m_animal{animal} {}
+    : m_x{x}, m_y{y}, m_plant{plant}, m_animal{animal} {}
+
+int MapTile::getX() const { return m_x; }
+int MapTile::getY() const { return m_y; }
+void MapTile::setX(int x) { m_x = x; }
+void MapTile::setY(int y) { m_y = y; } 
 
 bool MapTile::hasPlant() { return m_plant; }
 bool MapTile::hasAnimal() { return m_animal; }

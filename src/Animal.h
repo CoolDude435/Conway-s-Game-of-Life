@@ -13,11 +13,8 @@ class Animal : public Organism
         int getEnergy() const;
         int getMaxEnergy() const;
         
-
-
-
-        bool moveNorth();
-        bool moveSouth();
-        bool moveWest();
-        bool moveEast();
+        void moveNorth();
+        void moveSouth();
+        void moveWest();
+        void moveEast();
 };

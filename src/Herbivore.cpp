@@ -8,4 +8,3 @@ Herbivore* Herbivore::clone() {
     return new Herbivore(getX(),getY(),getID(),getMaxEnergy());
 }
 SpeciesType Herbivore::getSpeciesType() { return herbivore; }
-void Herbivore::takeTurn() {}

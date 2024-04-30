@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Organism.h"
 
 class Plant : public Organism
@@ -9,6 +10,7 @@ class Plant : public Organism
         int m_regrowTimer;
         bool m_isEaten;
 
+
     public:
         Plant();
         Plant(int x, int y, char id, int regrowCoef, int energyPts);
@@ -18,5 +20,4 @@ class Plant : public Organism
         bool isEaten() const;
         Plant* clone();
         SpeciesType getSpeciesType() override;
-        void takeTurn() override;
 };

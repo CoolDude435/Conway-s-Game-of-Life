@@ -14,5 +14,3 @@ Plant* Plant::clone() {
     return new Plant(getX(),getY(),getID(),getRegrowCoef(),getEnergyPts());
 }
 SpeciesType Plant::getSpeciesType() { return plant; }
-
-void Plant::takeTurn() {}

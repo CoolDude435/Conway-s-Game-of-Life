@@ -2,8 +2,15 @@
 
 enum SpeciesType
 {   
-    NA,
     plant,
     herbivore,
     omnivore
+};
+
+enum Direction
+{
+    north,
+    west,
+    south,
+    east
 };

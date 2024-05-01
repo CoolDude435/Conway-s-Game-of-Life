@@ -17,6 +17,18 @@ MapTile* Map::getTile(int x, int y) const {
         return nullptr;
     }
 }
+std::vector<MapTile*> Map::getAdjacent(int x,int y) const {
+    std::vector<MapTile*> adjacent{};
+    MapTile* n = getTile(x,y-1);
+    if (n) { adjacent.push_back(n); }
+    MapTile* w = getTile(x-1,y);
+    if (w) { adjacent.push_back(w); }
+    MapTile* s = getTile(x,y+1);
+    if (s) { adjacent.push_back(s); }
+    MapTile* e = getTile(x+1,y);
+    if (e) { adjacent.push_back(e); }
+    return adjacent;
+}
 
 int Map::getWidth() const { return m_width; }
 int Map::getHeight() const { return m_height; }
@@ -30,7 +42,7 @@ void Map::print() const {
             if (tile->hasAnimal()) {
                 Animal* animal = tile->getAnimal();
                 std::cout << animal->getID();
-            } else if (tile->hasPlant()) {
+            } else if (tile->hasPlant()&&(tile->getPlant()->isEaten()==false)) {
                 Plant* plant = tile->getPlant();
                 std::cout << plant->getID();
             } else {

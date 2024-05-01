@@ -20,6 +20,7 @@ class MapTile
         void setY(int y);
         bool hasPlant();
         bool hasAnimal();
+        bool isEmpty();
         Plant* getPlant();
         Animal* getAnimal();
         void setPlant(Plant* plant);

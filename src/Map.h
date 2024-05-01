@@ -14,6 +14,7 @@ class Map
         Map();
         Map(int height, int width);
         MapTile* getTile(int x, int y) const;
+        std::vector<MapTile*> getAdjacent(int x, int y) const;
         int getWidth() const;
         int getHeight() const;
         void print() const;

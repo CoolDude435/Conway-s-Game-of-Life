@@ -116,7 +116,29 @@ void Ecosystem::takeTurn(Plant* plant) {
     }
 }
 void Ecosystem::takeTurn(Herbivore* herbivore) {}
-void Ecosystem::takeTurn(Omnivore* omnivore) {}
+void Ecosystem::takeTurn(Omnivore* omnivore) {
+    std::vector<MapTile*> adjacent = m_map.getAdjacent(omnivore->getX(),omnivore->getY());
+    std::vector<MapTile*> food{};
+    std::vector<MapTile*> empty{};
+    for (int i=0;i<adjacent.size();i++) {
+        MapTile* tile = adjacent[i];
+        if ((tile->hasAnimal()&&(tile->getAnimal()->getSpeciesType()==herbivore))) {
+            if (omnivore->canConsume(dynamic_cast<Herbivore*>(tile->getAnimal()))) {
+                food.push_back(tile);
+            }
+        } else if (tile->hasPlant()) {
+            if (tile->getPlant()->isEaten()) {
+                empty.push_back(tile);
+            } else {
+                if (omnivore->Animal::canConsume(tile->getPlant())) {
+                    food.push_back(tile);
+                }
+            }
+        } else {
+            empty.push_back(tile);
+        }
+    }
+}
 
 Organism* parseSpecies(std::string& s) {
     Organism* organism;

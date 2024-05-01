@@ -13,23 +13,10 @@ void MapTile::setY(int y) { m_y = y; }
 
 bool MapTile::hasPlant() { return m_plant; }
 bool MapTile::hasAnimal() { return m_animal; }
+bool MapTile::isEmpty() { return (!m_plant)&&(!m_animal); }
 
 Plant* MapTile::getPlant() { return m_plant; }
 Animal* MapTile::getAnimal() { return m_animal; }
 
-void MapTile::setPlant(Plant* plant) {
-    if (this->hasPlant()) {
-        //for testing purposes, this should be checked by the caller
-        std::cerr << "Can't set a plant on a tile already with a plant.\n";
-    } else {
-        m_plant = plant;
-    }
-}
-void MapTile::setAnimal(Animal* animal) {
-    if (this->hasAnimal()) {
-        //for testing purposes, this should be checked by the caller
-        std::cerr << "Can't set an animal on a tile already with an animal.\n";
-    } else {
-        m_animal = animal;
-    }
-}
+void MapTile::setPlant(Plant* plant) { m_plant = plant; }
+void MapTile::setAnimal(Animal* animal) { m_animal = animal; }

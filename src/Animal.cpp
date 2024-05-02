@@ -8,6 +8,8 @@ Animal::Animal(int x, int y, char id, int maxEnergy)
 
 int Animal::getEnergy() const { return m_energy; }
 int Animal::getMaxEnergy() const { return m_maxEnergy; }
+void Animal::setEnergy(int energy) { m_energy = energy; }
+
 bool Animal::canConsume(Plant* plant) {
     if ((m_energy+plant->getEnergyPts()-1)<=m_maxEnergy) {
         return true;
@@ -15,23 +17,14 @@ bool Animal::canConsume(Plant* plant) {
         return false;
     }
 }
-
-
-
-
-void Animal::moveNorth() {
-    setY(getY()-1);
-    m_energy--;
+void Animal::eat(Plant* plant) {
+    m_energy = m_energy+plant->getEnergyPts()-1;
+    plant->wasEaten();
+    moveTo(plant->getX(), plant->getY());
 }
-void Animal::moveSouth() {
-    setY(getY()+1);
-    m_energy--;
-}
-void Animal::moveWest() {
-    setX(getX()-1);
-    m_energy--;
-}
-void Animal::moveEast() {
-    setX(getX()+1);
+
+void Animal::moveTo(int x, int y) {
+    setX(x);
+    setY(y);
     m_energy--;
 }

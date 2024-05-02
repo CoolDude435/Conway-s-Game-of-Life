@@ -11,11 +11,12 @@ int Plant::getRegrowTimer() const { return m_regrowTimer; }
 bool Plant::isEaten() const { return m_isEaten; }
 void Plant::grow() {
     m_regrowTimer++;
-    if (m_regrowTimer==m_regrowCoef) {
+    if (m_regrowTimer>=m_regrowCoef) {
         m_regrowTimer = 0;
         m_isEaten = false;
     }
 }
+void Plant::wasEaten() { m_isEaten = true; }
 
 Plant* Plant::clone() {
     return new Plant(getX(),getY(),getID(),getRegrowCoef(),getEnergyPts());

@@ -14,11 +14,8 @@ class Animal : public Organism
         Animal(int x, int y, char id, int maxEnergy);
         int getEnergy() const;
         int getMaxEnergy() const;
+        void setEnergy(int energy);
         bool canConsume(Plant* plant);
-        
-        
-        void moveNorth();
-        void moveSouth();
-        void moveWest();
-        void moveEast();
+        void eat(Plant* plant);
+        void moveTo(int x, int y);
 };

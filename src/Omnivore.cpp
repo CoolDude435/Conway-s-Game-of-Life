@@ -9,10 +9,18 @@ Omnivore* Omnivore::clone() {
 }
 SpeciesType Omnivore::getSpeciesType() { return omnivore; }
 
-bool Omnivore::canConsume(Herbivore* herbivore) {
-    if ((this->getEnergy()+herbivore->getEnergy()-1)<=this->getMaxEnergy()) {
-        return true;
-    } else {
-        return false;
+bool Omnivore::canConsume(Animal* animal) {
+    if (animal->getSpeciesType()==herbivore) {
+        if ((this->getEnergy()+animal->getEnergy()-1)<=this->getMaxEnergy()) {
+            return true;
+        }
     }
+    return false;
+}
+
+void Omnivore::eat(Herbivore* herbivore) {
+    int energy = getEnergy()+herbivore->getEnergy()-1;
+    setEnergy(energy);
+    herbivore->wasEaten();
+    moveTo(herbivore->getX(), herbivore->getY());
 }

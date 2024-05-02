@@ -12,5 +12,7 @@ class Omnivore : public Animal
         Omnivore(int x, int y, char id, int maxEnergy);
         Omnivore* clone();
         SpeciesType getSpeciesType() override;
-        bool canConsume(Herbivore* animal);
+        bool canConsume(Animal* animal);
+        void eat(Herbivore* herbivore);
+
 };

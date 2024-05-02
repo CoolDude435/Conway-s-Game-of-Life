@@ -19,8 +19,8 @@ bool Omnivore::canConsume(Animal* animal) {
 }
 
 void Omnivore::eat(Herbivore* herbivore) {
-    int energy = getEnergy()+herbivore->getEnergy()-1;
+    int energy = getEnergy()+herbivore->getEnergy();
     setEnergy(energy);
     herbivore->wasEaten();
-    moveTo(herbivore->getX(), herbivore->getY());
+    //moveTo(herbivore->getX(), herbivore->getY());
 }

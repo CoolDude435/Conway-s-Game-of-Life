@@ -22,4 +22,5 @@ class Plant : public Organism
         void wasEaten();
         Plant* clone();
         SpeciesType getSpeciesType() override;
+        bool isDead() override;
 };

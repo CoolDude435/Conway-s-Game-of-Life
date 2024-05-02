@@ -11,7 +11,7 @@ Map::Map(int height, int width) : m_height{height}, m_width{width} {
 }
 
 MapTile* Map::getTile(int x, int y) const {
-    if ((0<=x&&x<m_width)&&(0<=y<m_height)) {
+    if ((0<=x&&x<m_width)&&(0<=y&&y<m_height)) {
         return m_mapData[y][x];
     } else {
         return nullptr;
@@ -51,4 +51,6 @@ void Map::print() const {
         }
         std::cout << '\n';
     }
+    for (int i=0;i<m_width;i++) { std::cout << '-'; }
+    std::cout << '\n';
 }

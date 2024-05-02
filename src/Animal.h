@@ -18,4 +18,5 @@ class Animal : public Organism
         bool canConsume(Plant* plant);
         void eat(Plant* plant);
         void moveTo(int x, int y);
+        bool isDead() override;
 };

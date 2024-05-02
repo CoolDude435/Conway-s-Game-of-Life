@@ -36,6 +36,9 @@ class Ecosystem
         void takeTurn(Omnivore* omnivore);
         void sortTiles(Omnivore* omnivore, std::vector<MapTile*>& food, std::vector<MapTile*>& empty);
         void sortTiles(Herbivore* herbivore, std::vector<MapTile*>& predator, std::vector<MapTile*>& food, std::vector<MapTile*>& empty);
+        void moveAnimal(Animal* animal, MapTile* tile);
+        void tryEscape(Herbivore* prey, Omnivore* predator);
+        bool tryEscapeTo(Herbivore* prey, int x, int y);
 };
 
 Organism* parseSpecies(std::string& s);

@@ -16,6 +16,7 @@ class Organism
         void setX(int x);
         void setY(int y);
         char getID();
+        virtual bool isDead() = 0;
         virtual Organism* clone() = 0;
         virtual SpeciesType getSpeciesType() = 0;
 };

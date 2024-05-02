@@ -22,3 +22,5 @@ Plant* Plant::clone() {
     return new Plant(getX(),getY(),getID(),getRegrowCoef(),getEnergyPts());
 }
 SpeciesType Plant::getSpeciesType() { return plant; }
+
+bool Plant::isDead() { return false; }

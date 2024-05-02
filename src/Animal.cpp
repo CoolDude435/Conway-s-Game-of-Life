@@ -18,13 +18,16 @@ bool Animal::canConsume(Plant* plant) {
     }
 }
 void Animal::eat(Plant* plant) {
-    m_energy = m_energy+plant->getEnergyPts()-1;
+    //moveTo(plant->getX(), plant->getY());
+    m_energy = m_energy+plant->getEnergyPts();
     plant->wasEaten();
-    moveTo(plant->getX(), plant->getY());
 }
 
 void Animal::moveTo(int x, int y) {
+    return;
     setX(x);
     setY(y);
     m_energy--;
 }
+
+bool Animal::isDead() { return m_energy==0; }

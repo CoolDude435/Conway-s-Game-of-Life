@@ -33,3 +33,20 @@ int indexOf(std::string& s,char c) {
     }
     return -1;
 }
+
+unsigned int randomNum(unsigned int ceiling) {
+    std::srand(std::time(nullptr));
+    return std::rand()%ceiling;
+}
+
+bool fileExist(std::string& fileName) {
+    std::ifstream file;
+    file.open(fileName);
+    if (file) {
+        file.close();
+        return true;
+    } else {
+        file.close();
+        return false;
+    }
+}

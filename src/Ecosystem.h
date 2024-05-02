@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <iostream>
+#include <limits>
 #include "Map.h"
 #include "Herbivore.h"
 #include "Omnivore.h"
@@ -27,13 +28,17 @@ class Ecosystem
         void iterate(int steps);
     private:
         void populateMap(std::string& mapFile);
+        void setUpOrganism(Organism* organism, int x, int y);
         void createSpeciesList(std::string& speciesFile);
         void takeTurn(Organism* organism);
         void takeTurn(Plant* plant);
         void takeTurn(Herbivore* herbivore);
         void takeTurn(Omnivore* omnivore);
-
+        void sortTiles(Omnivore* omnivore, std::vector<MapTile*>& food, std::vector<MapTile*>& empty);
+        void sortTiles(Herbivore* herbivore, std::vector<MapTile*>& predator, std::vector<MapTile*>& food, std::vector<MapTile*>& empty);
 };
 
 Organism* parseSpecies(std::string& s);
+void Menu(Ecosystem& ecosystem);
+int enterNum();
 

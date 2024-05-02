@@ -20,42 +20,46 @@ void Ecosystem::populateMap(std::string& mapFile) {
             char tile = row[j];
             if(tile!=' ') {
                 Organism* organism = m_species[tile];
-                SpeciesType type = organism->getSpeciesType();
-                switch(type) {
-                    case plant:
-                        {
-                            Plant* p = (dynamic_cast<Plant*>(organism))->clone();
-                            p->setX(j);
-                            p->setY(i);
-                            m_map.getTile(j,i)->setPlant(p);
-                            m_organisms.insert(p);
-                        }
-                        break;
-                    case herbivore:
-                        {
-                            Herbivore* h = (dynamic_cast<Herbivore*>(organism))->clone();
-                            h->setX(j);
-                            h->setY(i);
-                            m_map.getTile(j,i)->setAnimal(h);
-                            m_organisms.insert(h);
-                        }
-                        break;
-                    case omnivore:
-                        {
-                            Omnivore* o = (dynamic_cast<Omnivore*>(organism))->clone();
-                            o->setX(j);
-                            o->setY(i);
-                            m_map.getTile(j,i)->setAnimal(o);
-                            m_organisms.insert(o);
-                        }
-                        break;
-                    default:
-                        std::cerr << "SpeciesType Invalid in Ecosystem::populateMap";
-                        //This should never trigger, for testing purposes
-                        break;
-                }
+                setUpOrganism(organism, j, i);
             }
         }
+    }
+}
+
+void Ecosystem::setUpOrganism(Organism* organism, int x, int y) {
+    SpeciesType type = organism->getSpeciesType();
+    switch(type) {
+        case plant:
+            {
+                Plant* p = (dynamic_cast<Plant*>(organism))->clone();
+                p->setX(x);
+                p->setY(y);
+                m_map.getTile(x,y)->setPlant(p);
+                m_organisms.insert(p);
+            }
+            break;
+        case herbivore:
+            {
+                Herbivore* h = (dynamic_cast<Herbivore*>(organism))->clone();
+                h->setX(x);
+                h->setY(y);
+                m_map.getTile(x,y)->setAnimal(h);
+                m_organisms.insert(h);
+            }
+                break;
+        case omnivore:
+            {
+                Omnivore* o = (dynamic_cast<Omnivore*>(organism))->clone();
+                o->setX(x);
+                o->setY(y);
+                m_map.getTile(x,y)->setAnimal(o);
+                m_organisms.insert(o);
+            }
+                break;
+        default:
+            std::cerr << "SpeciesType Invalid in Ecosystem::populateMap";
+            //This should never trigger, for testing purposes
+            break;
     }
 }
 
@@ -72,7 +76,10 @@ Map Ecosystem::getMap() { return m_map; }
 std::unordered_map<char,Organism*> Ecosystem::getSpecies() { return m_species; }
 
 void Ecosystem::iterate() {
-
+    return;
+    for (Organism* o : m_organisms) {
+        takeTurn(o);
+    }
 }
 
 void Ecosystem::iterate(int steps) {
@@ -86,24 +93,24 @@ void Ecosystem::takeTurn(Organism* organism) {
     switch(type) {
     case plant:
         {
-            Plant* p = (dynamic_cast<Plant*>(organism))->clone();
+            Plant* p = (dynamic_cast<Plant*>(organism));
             takeTurn(p);
         }
         break;
     case herbivore:
         {
-            Herbivore* h = (dynamic_cast<Herbivore*>(organism))->clone();
+            Herbivore* h = (dynamic_cast<Herbivore*>(organism));
             takeTurn(h);
         }
         break;
     case omnivore:
         {
-            Omnivore* o = (dynamic_cast<Omnivore*>(organism))->clone();
+            Omnivore* o = (dynamic_cast<Omnivore*>(organism));
             takeTurn(o);
         }
         break;
     default:
-        std::cerr << "SpeciesType Invalid in Ecosystem::populateMap";
+        std::cerr << "SpeciesType Invalid in Ecosystem::takeTurn()";
         //This should never trigger, for testing purposes
         break;
     }
@@ -115,15 +122,26 @@ void Ecosystem::takeTurn(Plant* plant) {
         }
     }
 }
-void Ecosystem::takeTurn(Herbivore* herbivore) {}
-void Ecosystem::takeTurn(Omnivore* omnivore) {
-    std::vector<MapTile*> adjacent = m_map.getAdjacent(omnivore->getX(),omnivore->getY());
+void Ecosystem::takeTurn(Herbivore* herbivore) {
+    std::vector<MapTile*> predator{};
     std::vector<MapTile*> food{};
     std::vector<MapTile*> empty{};
+    sortTiles(herbivore, predator, food, empty);
+    
+}
+void Ecosystem::takeTurn(Omnivore* omnivore) {
+    std::vector<MapTile*> food{};
+    std::vector<MapTile*> empty{};
+    sortTiles(omnivore, food, empty);
+    
+}
+
+void Ecosystem::sortTiles(Omnivore* omnivore, std::vector<MapTile*>& food, std::vector<MapTile*>& empty) {
+    std::vector<MapTile*> adjacent = m_map.getAdjacent(omnivore->getX(),omnivore->getY());
     for (int i=0;i<adjacent.size();i++) {
         MapTile* tile = adjacent[i];
-        if ((tile->hasAnimal()&&(tile->getAnimal()->getSpeciesType()==herbivore))) {
-            if (omnivore->canConsume(dynamic_cast<Herbivore*>(tile->getAnimal()))) {
+        if (tile->hasAnimal()) {
+            if (omnivore->canConsume(tile->getAnimal())) {
                 food.push_back(tile);
             }
         } else if (tile->hasPlant()) {
@@ -139,6 +157,30 @@ void Ecosystem::takeTurn(Omnivore* omnivore) {
         }
     }
 }
+
+void Ecosystem::sortTiles(Herbivore* herbivore, std::vector<MapTile*>& predator, std::vector<MapTile*>& food, std::vector<MapTile*>& empty) {
+    std::vector<MapTile*> adjacent = m_map.getAdjacent(herbivore->getX(),herbivore->getY());
+    for (int i=0;i<adjacent.size();i++) {
+        MapTile* tile = adjacent[i];
+        if (tile->hasAnimal()) {
+            if (tile->getAnimal()->getSpeciesType()==omnivore) {
+                predator.push_back(tile);
+            }
+        } else if (tile->hasPlant()&&(tile->hasAnimal()==false)) {
+            if (tile->getPlant()->isEaten()) {
+                empty.push_back(tile);
+            } else {
+                if (herbivore->Animal::canConsume(tile->getPlant())) {
+                    food.push_back(tile);
+                }
+            }
+        } else {
+            empty.push_back(tile);
+        }
+    }
+}
+
+
 
 Organism* parseSpecies(std::string& s) {
     Organism* organism;
@@ -166,6 +208,58 @@ Organism* parseSpecies(std::string& s) {
     return organism;
 }
 
+void Menu(Ecosystem& ecosystem) {
+    std::cout << "Starting Map: \n";
+    ecosystem.getMap().print();
+    bool iterate{true};
+    char input{};
+    while (iterate) {
+        std::cout << "Enter: (I - iterate once) (M - iterate multiple) (X - exit)\n";
+        std::cin >> input;
+        switch (input)
+        {
+        case 'I':
+            ecosystem.iterate();
+            ecosystem.getMap().print();
+            break;
+        case 'M':
+            ecosystem.iterate(enterNum());
+            ecosystem.getMap().print();
+            break;
+        case 'X':
+            iterate = false;
+            break;
+        default:
+            std::cout << "Invalid input, try again.\n";
+            break;
+        }
+    }
+    
+    
+
+
+}
+
+int enterNum() {
+    bool loop{true};
+    int iters{};
+    while (loop) {
+        std::cout << "Enter a number of iterations to run.\n";
+        if (!(std::cin >> iters)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Not a number, try again.\n";
+        } else {
+            if (iters >=0) {
+                loop = false;
+            } else {
+                std::cout << "Enter a non-negative number, try again.\n";
+            }
+        }
+    }
+    return iters;
+}
+
 int main(int argc, char* argv[]) {
     std::string path = "/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/";
     if (argc == 2) {
@@ -177,5 +271,7 @@ int main(int argc, char* argv[]) {
     Ecosystem ecosystem{map,species};
     std::cout << "Width: " << ecosystem.getMap().getWidth() << '\n';
     std::cout << "Height: " << ecosystem.getMap().getHeight() << '\n';    
+    Menu(ecosystem);
     ecosystem.getMap().print();
+    
 }

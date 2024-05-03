@@ -13,7 +13,7 @@ Details:
 <br>
 
 How to build:
-- run the make command in the terminal, this will build a binary name Binary.bin
+- run the make command in the terminal, this will build a binary called Binary.bin
 <br>
 
 How to run:

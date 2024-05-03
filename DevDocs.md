@@ -20,6 +20,23 @@ Libraries:
 - ctime
 - fstream
 ___
+**Design**
+<br>
+This code is broken down into three major sections: Ecosystem controller, Map data structure, and the Organism Class hierachy. 
+<br>
+- The Map data structure with the help of MapTile defines the 2D area in which the Ecosystem resides. It holds the data of the location of Organisms and allows Ecosystem to access this information.
+- The Organism Class hierachy containing the base class Organism and its children Plant and Animal, with Animal further being derived by Herbivore and Omnivore defines the entities that will be iteracting with the 2D environment. The Organisms themselves don't posess the power to iteract with Ecosystem, but provides the Ecosystem the information regarding the status of each Organism.
+- The Ecosystem controller is the one that actually runs the simulation, holding the most power with direct access of the Map and its Organisms. It also defines how each Organism behaves during its turn within an iteration. It also provides the user with the iterface to iteract with the Ecosystem.
+<br>
+<br>
+The strategy taken in the process of creating this application was to break down each function in smaller steps. Instead of one function that does all the needs of simulating an iteration, break it down into smaller chunks. Each being chunk being a seperate function with its purpose being to accomplish a smaller portion of the bigger application.
+<br>
+<br>
+A major design pattern on which this application was built on was Object-Oriented Design, OOD. The Organism hierachy was created in a way where each subclass below only needs to implement extra functionality specific to their subclass and nothing more. This keeps managing these classes much easier, especially when you need to refactor a portion of the code.
+<br>
+<br>
+A final design choice taken was readability. Variables and functions created and named in a way where it is easy to get high level understanding of what it does without anything extra. This is result in the creation of many extra methods which may only have one or two lines of code, but this lets anyone reading the code understand what is happening from the names of varables and methods rather than needing to going into depth of what each thing does.
+___
 **Files**
 <br>
 *Makefile* - the Makefile for building Binary.bin

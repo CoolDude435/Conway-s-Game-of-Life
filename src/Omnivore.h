@@ -10,9 +10,9 @@ class Omnivore : public Animal
     public:
         Omnivore();
         Omnivore(int x, int y, char id, int maxEnergy);
-        Omnivore* clone();
+        Omnivore* clone() const;
         SpeciesType getSpeciesType() override;
-        bool canConsume(Animal* animal);
+        bool canConsume(Animal* animal) const;
         void eat(Herbivore* herbivore);
 
 };

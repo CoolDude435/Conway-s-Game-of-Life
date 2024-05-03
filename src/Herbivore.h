@@ -8,7 +8,7 @@ class Herbivore : public Animal
     public:
         Herbivore();
         Herbivore(int x, int y, char id, int maxEnergy);
-        Herbivore* clone();
+        Herbivore* clone() const;
         SpeciesType getSpeciesType() override;
         void wasEaten();
 };

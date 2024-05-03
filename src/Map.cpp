@@ -6,18 +6,20 @@ Map::Map(int height, int width) : m_height{height}, m_width{width} {
     for (int i=0;i<m_height;i++) {
         for (int j=0;j<m_width;j++) {
             m_mapData[i][j] = new MapTile(j,i,nullptr,nullptr);
+            //setting up empty MapTiles with correct xy-coordinates
         }
     }
 }
 
-MapTile* Map::getTile(int x, int y) const {
-    if ((0<=x&&x<m_width)&&(0<=y&&y<m_height)) {
+MapTile* Map::getTile(int x, int y) {
+    if ((0<=x&&x<m_width)&&(0<=y&&y<m_height)) { //check if out of bounds
         return m_mapData[y][x];
     } else {
-        return nullptr;
+        return nullptr; // returns nullptr if out of bounds
     }
 }
-std::vector<MapTile*> Map::getAdjacent(int x,int y) const {
+std::vector<MapTile*> Map::getAdjacent(int x,int y) {
+    //returns a vector of existing adjacent tiles to a spot
     std::vector<MapTile*> adjacent{};
     MapTile* n = getTile(x,y-1);
     if (n) { adjacent.push_back(n); }
@@ -33,7 +35,8 @@ std::vector<MapTile*> Map::getAdjacent(int x,int y) const {
 int Map::getWidth() const { return m_width; }
 int Map::getHeight() const { return m_height; }
 
-void Map::print() const {
+void Map::print() const { 
+    //prints out the map, chars represent an Organism in that tile
     for (int i=0;i<m_width;i++) { std::cout << '-'; }
     std::cout << '\n';
     for (int i=0;i<m_height;i++) {

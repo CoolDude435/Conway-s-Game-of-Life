@@ -20,7 +20,7 @@ class Plant : public Organism
         bool isEaten() const;
         void grow();
         void wasEaten();
-        Plant* clone();
+        Plant* clone() const;
         SpeciesType getSpeciesType() override;
         bool isDead() override;
 };

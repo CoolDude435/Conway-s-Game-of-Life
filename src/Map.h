@@ -13,8 +13,8 @@ class Map
     public:
         Map();
         Map(int height, int width);
-        MapTile* getTile(int x, int y) const;
-        std::vector<MapTile*> getAdjacent(int x, int y) const;
+        MapTile* getTile(int x, int y);
+        std::vector<MapTile*> getAdjacent(int x, int y);
         int getWidth() const;
         int getHeight() const;
         void print() const;

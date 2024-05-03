@@ -10,4 +10,4 @@ int Organism::getY() const { return m_y; }
 void Organism::setX(int x) { m_x = x; }
 void Organism::setY(int y) { m_y = y; } 
 
-char Organism::getID() { return m_id; }
+char Organism::getID() const { return m_id; }

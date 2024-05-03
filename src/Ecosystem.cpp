@@ -4,11 +4,14 @@ Ecosystem::Ecosystem()
     : m_map{}, m_species{}, m_organisms{} {}
 Ecosystem::Ecosystem(std::string& mapFile, std::string& speciesFile) 
     : m_species{}, m_organisms{} {
+    //get the dimensions of the map
     int width = mapWidth(mapFile);
     int height = mapHeight(mapFile);
     m_map = Map(height,width);
     createSpeciesList(speciesFile);
+    //create a unique list of all possible Organisms
     populateMap(mapFile);
+    //populate the map with Organisms
 }
 
 void Ecosystem::populateMap(std::string& mapFile) {
@@ -21,6 +24,9 @@ void Ecosystem::populateMap(std::string& mapFile) {
             if(tile!=' ') {
                 Organism* organism = m_species[tile];
                 setUpOrganism(organism, j, i);
+                //create an Organism with a matching ID from
+                //the list of possible Organisms and
+                //placed in its correct location
             }
         }
     }
@@ -28,7 +34,7 @@ void Ecosystem::populateMap(std::string& mapFile) {
 
 void Ecosystem::setUpOrganism(Organism* organism, int x, int y) {
     SpeciesType type = organism->getSpeciesType();
-    switch(type) {
+    switch(type) { //casting to correct type and creating the Organism
         case plant:
             {
                 Plant* p = (dynamic_cast<Plant*>(organism))->clone();
@@ -57,8 +63,6 @@ void Ecosystem::setUpOrganism(Organism* organism, int x, int y) {
             }
                 break;
         default:
-            std::cerr << "SpeciesType Invalid in Ecosystem::populateMap";
-            //This should never trigger, for testing purposes
             break;
     }
 }
@@ -67,28 +71,29 @@ void Ecosystem::createSpeciesList(std::string& speciesFile) {
     std::ifstream sFile{speciesFile};
     std::string s{};
     while (getline(sFile,s)) {
+        //parse each line of species file to create 
+        //a map of all possible unique Organisms
         Organism* o = parseSpecies(s);
         m_species[o->getID()] = o;
     }
 }
 
 Map Ecosystem::getMap() { return m_map; }
-std::unordered_map<char,Organism*> Ecosystem::getSpecies() { return m_species; }
 
 void Ecosystem::iterate() {
     std::vector<Organism*> dead{};
     for (Organism* o : m_organisms) {
-        if (o->isDead()) {
+        if (o->isDead()) { //check if a predator ate it before its turn
             dead.push_back(o);
         } else {
             takeTurn(o);
-            if (o->isDead()) {
+            if (o->isDead()) { //check if it died after its turn
                 dead.push_back(o);
                 m_map.getTile(o->getX(),o->getY())->setAnimal(nullptr);
             }
         }  
     }
-    for (Organism* o : dead) {
+    for (Organism* o : dead) { //clear dead Organisms
         m_organisms.erase(o);
     }
 }
@@ -101,7 +106,7 @@ void Ecosystem::iterate(int steps) {
 
 void Ecosystem::takeTurn(Organism* organism) {
     SpeciesType type = organism->getSpeciesType();
-    switch(type) {
+    switch(type) { //takeTurn according to its underlying type
         case plant:
             {
                 Plant* p = (dynamic_cast<Plant*>(organism));
@@ -121,12 +126,11 @@ void Ecosystem::takeTurn(Organism* organism) {
             }
             break;
         default:
-            std::cerr << "SpeciesType Invalid in Ecosystem::takeTurn()";
-            //This should never trigger, for testing purposes
             break;
     }
 }
 void Ecosystem::takeTurn(Plant* plant) {
+    //if Plant is eaten grow
     if (plant->isEaten()) {
         if (m_map.getTile(plant->getX(),plant->getY())->hasAnimal()==false) {
             plant->grow();
@@ -138,15 +142,16 @@ void Ecosystem::takeTurn(Herbivore* herbivore) {
     std::vector<MapTile*> food{};
     std::vector<MapTile*> empty{};
     sortTiles(herbivore, predator, food, empty);
+    //sort possible tiles into actions
     MapTile* chosenTile{nullptr};
-    if (predator.size()>0) {
+    if (predator.size()>0) { //if there is atleast one predator try run away
         chosenTile = predator[randomNum(predator.size())];
         tryEscape(herbivore, dynamic_cast<Omnivore*>(chosenTile->getAnimal()));
     } else {
-        if (food.size()>0) {
+        if (food.size()>0) { //if there are consumable Plants eat one at random
             chosenTile = food[randomNum(food.size())];
             herbivore->Animal::eat(chosenTile->getPlant());
-        } else if (empty.size()>0) {
+        } else if (empty.size()>0) { //move to random empty tile if their exist
             chosenTile = empty[randomNum(empty.size())];
         }
         if (chosenTile!=nullptr) {
@@ -158,15 +163,16 @@ void Ecosystem::takeTurn(Omnivore* omnivore) {
     std::vector<MapTile*> food{};
     std::vector<MapTile*> empty{};
     sortTiles(omnivore, food, empty);
+    //sort possible tiles into actions
     MapTile* chosenTile{nullptr};
-    if (food.size()>0) {
+    if (food.size()>0) { //if there are consumable food eat one at random
         chosenTile = food[randomNum(food.size())];
         if (chosenTile->hasAnimal()) {
             omnivore->eat(dynamic_cast<Herbivore*>(chosenTile->getAnimal()));
         } else {
             omnivore->Animal::eat(chosenTile->getPlant());
         }
-    } else if (empty.size()>0){
+    } else if (empty.size()>0){ //move to random empty tile if their exist
         chosenTile = empty[randomNum(empty.size())];
     }
     if (chosenTile!=nullptr) {
@@ -175,6 +181,8 @@ void Ecosystem::takeTurn(Omnivore* omnivore) {
 }
 
 void Ecosystem::sortTiles(Omnivore* omnivore, std::vector<MapTile*>& food, std::vector<MapTile*>& empty) {
+    //sorts possible actions an omnivore can take
+    //eat food or move
     std::vector<MapTile*> adjacent = m_map.getAdjacent(omnivore->getX(),omnivore->getY());
     for (int i=0;i<adjacent.size();i++) {
         MapTile* tile = adjacent[i];
@@ -197,6 +205,8 @@ void Ecosystem::sortTiles(Omnivore* omnivore, std::vector<MapTile*>& food, std::
 }
 
 void Ecosystem::sortTiles(Herbivore* herbivore, std::vector<MapTile*>& predator, std::vector<MapTile*>& food, std::vector<MapTile*>& empty) {
+    //sorts possible actions a herbivore can take
+    //eat plant or move
     std::vector<MapTile*> adjacent = m_map.getAdjacent(herbivore->getX(),herbivore->getY());
     for (int i=0;i<adjacent.size();i++) {
         MapTile* tile = adjacent[i];
@@ -219,6 +229,7 @@ void Ecosystem::sortTiles(Herbivore* herbivore, std::vector<MapTile*>& predator,
 }
 
 void Ecosystem::moveAnimal(Animal* animal, MapTile* tile) {
+    //move animal to another tile and use one energy
     m_map.getTile(animal->getX(),animal->getY())->setAnimal(nullptr);
     animal->setX(tile->getX());
     animal->setY(tile->getY());
@@ -227,26 +238,29 @@ void Ecosystem::moveAnimal(Animal* animal, MapTile* tile) {
 }
 
 void Ecosystem::tryEscape(Herbivore* prey, Omnivore* predator) {
-    if (prey->getX()==predator->getX()) {
+    //try escape from a predator
+    if (prey->getX()==predator->getX()) { //if on same x-coord
         int oppositeY = prey->getY()+(prey->getY()-predator->getY());
+        //get y-coord of tile away from predator
         bool escaped = tryEscapeTo(prey, prey->getX(), oppositeY);
         if (escaped==false) {
-            if (randomNum(2)==1) {
+            if (randomNum(2)==1) { //pick another of the remaining two direction to run
                 escaped = tryEscapeTo(prey,prey->getX()+1,prey->getY());
                 if (escaped==false) { tryEscapeTo(prey,prey->getX()-1,prey->getY()); }
-            } else {
+            } else { //try last possible tile to escape to
                 escaped = tryEscapeTo(prey,prey->getX()-1,prey->getY());
                 if (escaped==false) { tryEscapeTo(prey,prey->getX()+1,prey->getY()); }
             }
         }
-    } else {
+    } else { //if on same y-coord
         int oppositeX = prey->getX()+(prey->getX()-predator->getX());
+        //get x-coord of tile away from predator
         bool escaped = tryEscapeTo(prey, oppositeX, prey->getY());
         if (escaped==false) {
-            if (randomNum(2)==1) {
+            if (randomNum(2)==1) { //pick another of the remaining two direction to run
                 escaped = tryEscapeTo(prey,prey->getX(),prey->getY()+1);
                 if (escaped==false) { tryEscapeTo(prey,prey->getX(),prey->getY()-1); }
-            } else {
+            } else { //try last possible tile to escape to
                 escaped = tryEscapeTo(prey,prey->getX(),prey->getY()-1);
                 if (escaped==false) { tryEscapeTo(prey,prey->getX(),prey->getY()+1); }
             }
@@ -255,7 +269,7 @@ void Ecosystem::tryEscape(Herbivore* prey, Omnivore* predator) {
 }
 
 bool Ecosystem::tryEscapeTo(Herbivore* prey, int x,int y) {
-    std::cout << prey->getID() << "tryEscapeTo " << x << ' ' << y << '\n';
+    //try to escape to the specified tile, return true if sucessful
     MapTile* tile = m_map.getTile(x,y);
     if (tile!=nullptr) {
         if (tile->hasAnimal()) {
@@ -282,6 +296,7 @@ bool Ecosystem::tryEscapeTo(Herbivore* prey, int x,int y) {
 }
 
 Organism* parseSpecies(std::string& s) {
+    //parsing strings into information for Organisms
     Organism* organism;
     std::string type = s.substr(0,indexOf(s,' '));
     if (type.compare("plant")==0) {
@@ -307,7 +322,7 @@ Organism* parseSpecies(std::string& s) {
     return organism;
 }
 
-void Menu(Ecosystem& ecosystem) {
+void Menu(Ecosystem& ecosystem) { //user interface
     std::cout << "Starting Map: \n";
     ecosystem.getMap().print();
     bool iterate{true};
@@ -324,7 +339,7 @@ void Menu(Ecosystem& ecosystem) {
             break;
         case 'm':
             {
-            int iters = enterNum();
+            int iters = enterNum(); //get a valid non-negative number from user
             std::cout << "After " << iters << " iterations\n";
             ecosystem.iterate(iters);
             ecosystem.getMap().print();
@@ -342,28 +357,9 @@ void Menu(Ecosystem& ecosystem) {
     }
 }
 
-int enterNum() {
-    bool loop{true};
-    int iters{};
-    while (loop) {
-        std::cout << "Enter a number of iterations to run.\n";
-        if (!(std::cin >> iters)) {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Not a number, try again.\n";
-        } else {
-            if (iters >=0) {
-                loop = false;
-            } else {
-                std::cout << "Enter a non-negative number, try again.\n";
-            }
-        }
-    }
-    return iters;
-}
+
 
 int main(int argc, char* argv[]) {
-    
     if (argc == 3) {
         std::string mapFile{argv[1]};
         std::string speciesFile{argv[2]};
@@ -385,16 +381,5 @@ int main(int argc, char* argv[]) {
         std::cout << "Aborting...\n";
         return 1;
     }
-    /*
-    std::string path = "/space/jlin60/Desktop/CS3210 Project/project-CoolDude435/input/";
-    std::string map = path+"map.txt";
-    std::string species = path+"species.txt";
-    Ecosystem ecosystem{map,species};
-    std::cout << "Width: " << ecosystem.getMap().getWidth() << '\n';
-    std::cout << "Height: " << ecosystem.getMap().getHeight() << '\n';    
-    Menu(ecosystem);
-    ecosystem.getMap().print();
-    */
-    
     return 0;
 }

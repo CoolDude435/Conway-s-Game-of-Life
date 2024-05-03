@@ -15,8 +15,7 @@ class Animal : public Organism
         int getEnergy() const;
         int getMaxEnergy() const;
         void setEnergy(int energy);
-        bool canConsume(Plant* plant);
+        bool canConsume(Plant* plant) const;
         void eat(Plant* plant);
-        void moveTo(int x, int y);
         bool isDead() override;
 };

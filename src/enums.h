@@ -6,11 +6,3 @@ enum SpeciesType
     herbivore,
     omnivore
 };
-
-enum Direction
-{
-    north,
-    west,
-    south,
-    east
-};

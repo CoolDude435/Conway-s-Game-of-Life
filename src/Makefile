@@ -1,5 +1,8 @@
 all: Ecosystem.bin
 
+sample: Ecosystem.bin
+	./Ecosystem.bin ../input/map.txt ../input/species.txt
+
 Ecosystem.bin: Ecosystem.cpp Ecosystem.h Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o enums.h util.o
 	g++ -o Ecosystem.bin Ecosystem.cpp Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o util.o
 
@@ -8,7 +11,6 @@ Map.o: Map.cpp Map.h MapTile.o MapTile.cpp MapTile.h
 
 MapTile.o: MapTile.cpp MapTile.h Plant.o Plant.cpp Plant.h Animal.o Animal.cpp Animal.h
 	g++ -c MapTile.cpp
-
 
 Omnivore.o: Omnivore.cpp Omnivore.h Animal.o Animal.cpp Animal.h Herbivore.o Herbivore.cpp Herbivore.h
 	g++ -c Omnivore.cpp

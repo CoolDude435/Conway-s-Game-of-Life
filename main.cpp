@@ -1,9 +1,9 @@
 #include <iostream>
 #include <SDL2/SDL.h>
-
+//mingw-w64-ucrt-x86_64-SDL2
 const int WIDTH = 800, HEIGHT = 600;
 
-int main(int argc, char *argv[]) {
+int WinMain(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window *window = SDL_CreateWindow("Ecosystem Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_ALLOW_HIGHDPI);
 

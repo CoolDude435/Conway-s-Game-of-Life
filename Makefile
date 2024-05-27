@@ -1,37 +1,42 @@
 all: ecosystem.bin
 
 gui:
-	g++ -I src/include -L src/lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2
+	g++ -o main main.cpp -lSDL2 -lSDL2main
+#g++ -I src/include -L src/lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2
 
 sample: ecosystem.bin
 	./ecosystem.bin ../input/map.txt ../input/species.txt
 
-ecosystem.bin: Ecosystem.cpp Ecosystem.h Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o enums.h util.o
-	g++ -o ecosystem.bin Ecosystem.cpp Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o util.o
+ecosystem.bin: src/Ecosystem.cpp src/Ecosystem.h Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o src/enums.h util.o
+	g++ -o ecosystem.bin src/Ecosystem.cpp Organism.o Map.o MapTile.o Plant.o Animal.o Omnivore.o Herbivore.o util.o
 
-Map.o: Map.cpp Map.h MapTile.o MapTile.cpp MapTile.h
-	g++ -c Map.cpp
+Map.o: src/Map.cpp src/Map.h MapTile.o src/MapTile.cpp src/MapTile.h
+	g++ -c src/Map.cpp
 
-MapTile.o: MapTile.cpp MapTile.h Plant.o Plant.cpp Plant.h Animal.o Animal.cpp Animal.h
-	g++ -c MapTile.cpp
+MapTile.o: src/MapTile.cpp src/MapTile.h Plant.o src/Plant.cpp src/Plant.h Animal.o src/Animal.cpp src/Animal.h
+	g++ -c src/MapTile.cpp
 
-Omnivore.o: Omnivore.cpp Omnivore.h Animal.o Animal.cpp Animal.h Herbivore.o Herbivore.cpp Herbivore.h
-	g++ -c Omnivore.cpp
+Omnivore.o: src/Omnivore.cpp src/Omnivore.h Animal.o src/Animal.cpp src/Animal.h Herbivore.o src/Herbivore.cpp src/Herbivore.h
+	g++ -c src/Omnivore.cpp
 
-Herbivore.o: Herbivore.cpp Herbivore.h Animal.o Animal.cpp Animal.h
-	g++ -c Herbivore.cpp
+Herbivore.o: src/Herbivore.cpp src/Herbivore.h Animal.o src/Animal.cpp src/Animal.h
+	g++ -c src/Herbivore.cpp
 
-Animal.o: Animal.cpp Animal.h Organism.o Organism.cpp Organism.h Plant.o Plant.cpp Plant.h
-	g++ -c Animal.cpp
+Animal.o: src/Animal.cpp src/Animal.h Organism.o src/Organism.cpp src/Organism.h Plant.o src/Plant.cpp src/Plant.h
+	g++ -c src/Animal.cpp
 
-Plant.o: Plant.cpp Plant.h Organism.o Organism.cpp Organism.h
-	g++ -c Plant.cpp
+Plant.o: src/Plant.cpp src/Plant.h Organism.o src/Organism.cpp src/Organism.h
+	g++ -c src/Plant.cpp
 
-Organism.o: Organism.cpp Organism.h enums.h
-	g++ -c Organism.cpp
+Organism.o: src/Organism.cpp src/Organism.h src/enums.h
+	g++ -c src/Organism.cpp
 
-util.o: util.cpp util.h
-	g++ -c util.cpp
+util.o: src/util.cpp src/util.h
+	g++ -c src/util.cpp
 
 clean:
 	rm -rf *.o *.bin *gch
+
+win10clean:
+	del *.o
+	del *.bin	
